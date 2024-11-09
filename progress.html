@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress - Self-Care Journal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+        }
+        .nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #0052cc;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #0052cc;
+        }
+        .progress-box {
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #e0e7ff;
+            margin-top: 10px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>Progress</h1>
+    </div>
+    <div class="nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="resources.html">Resources</a>
+        <a href="progress.html">Progress</a>
+    </div>
+    
+    <div class="section">
+        <h2>Your Reflections</h2>
+        <div class="progress-box" id="reflectionsBox"></div>
+    </div>
+    <div class="section">
+        <h2>Your Goals</h2>
+        <div class="progress-box" id="goalsBox"></div>
+    </div>
+    <div class="section">
+        <h2>Your Gratitudes</h2>
+        <div class="progress-box" id="gratitudesBox"></div>
+    </div>
+    <div class="section">
+        <h2>Your Mindfulness Practices</h2>
+        <div class="progress-box" id="mindfulnessBox"></div>
+    </div>
+    <div class="section">
+        <h2>Mood Trends</h2>
+        <div class="chart-container">
+            <canvas id="moodTrendChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        function loadProgress() {
+            document.getElementById('reflectionsBox').innerText = localStorage.getItem('reflection') || 'No reflections saved yet.';
+            document.getElementById('goalsBox').innerText = localStorage.getItem('goal') || 'No goals saved yet.';
+            document.getElementById('gratitudesBox').innerText = localStorage.getItem('gratitude') || 'No gratitudes saved yet.';
+            document.getElementById('mindfulnessBox').innerText = localStorage.getItem('mindfulness') || 'No mindfulness practices saved yet.';
+
+            var moodData = JSON.parse(localStorage.getItem('moodData')) || [];
+            var ctx = document.getElementById('moodTrendChart').getContext('2d');
+            var chartData = {
+                labels: Array.from({ length: moodData.length }, (_, i) => i + 1),
+                datasets: [{
+                    label: 'Mood Score',
+                    data: moodData,
+                    backgroundColor: '#36a2eb',
+                    borderColor: '#36a2eb',
+                    fill: false,
+                    tension: 0.1
+                }]
+            };
+            new Chart(ctx, {
+                type: 'line',
+                data: chartData
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProgress);
+    </script>
+</body>
+</html>
